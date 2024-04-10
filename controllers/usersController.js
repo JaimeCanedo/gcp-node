@@ -9,6 +9,18 @@ const getAll = async (req,res) => {
     }
 };
 
+const createUsers = async (req, res) => {
+    const { name, password, email, rol } = req.body;
+    try {
+        const newUsers = await usersModel.createEmployee( name, password, email, rol);
+        res.status(201).json(newUsers);
+    } catch (error) {
+        console.error('Error al registrar empleado:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
 export const usersController = {
     getAll,
+    createUsers,
 };
