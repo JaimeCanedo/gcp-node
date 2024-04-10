@@ -15,7 +15,7 @@ const createUsers = async (req, res) => {
         const newUsers = await usersModel.createEmployee( name, password, email, rol);
         res.status(201).json(newUsers);
     } catch (error) {
-        console.error('Error al registrar empleado:', error);
+        console.error('Error al registrar usuario:', error);
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
