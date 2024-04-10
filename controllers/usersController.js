@@ -10,5 +10,5 @@ const getAll = async (req,res) => {
 };
 
 export const usersController = {
-    getAll
+    getAll,
 };
