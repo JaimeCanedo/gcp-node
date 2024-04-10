@@ -9,10 +9,10 @@ const getAll = async (req,res) => {
     }
 };
 
-const createUsers = async (req, res) => {
+const createUser = async (req, res) => {
     const { name, password, email, rol } = req.body;
     try {
-        const newUsers = await usersModel.createEmployee( name, password, email, rol);
+        const newUsers = await usersModel.createUser( name, password, email, rol);
         res.status(201).json(newUsers);
     } catch (error) {
         console.error('Error al registrar usuario:', error);
@@ -22,5 +22,5 @@ const createUsers = async (req, res) => {
 
 export const usersController = {
     getAll,
-    createUsers,
+    createUser,
 };
