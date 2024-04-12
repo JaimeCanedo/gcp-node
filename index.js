@@ -4,10 +4,11 @@ import Route from "./routes/Route.js";
 import cors from "cors";
 
 const app = express();
-app.use(express.static('frontend'));
+app.use(express.static('quasar-front/dist'));
 app.use(express.json());
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
+
 
 app.use(
   express.urlencoded({
