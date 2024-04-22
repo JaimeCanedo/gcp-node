@@ -21,8 +21,10 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+    //res.sendFile(path.join(__dirname + 'quasar-front/dist/index.html'));
     //res.json({message: "ok"});
+    res.sendFile(path.join(__dirname) + '/quasar-front/dist/spa/index.html');
+
 
 });
 
