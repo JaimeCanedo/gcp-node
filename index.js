@@ -2,13 +2,17 @@ import "dotenv/config";
 import express from "express";
 import Route from "./routes/Route.js";
 import cors from "cors";
+import { fileURLToPath } from "url";
+import path, { dirname } from "path";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
-app.use(express.static('quasar-front/dist'));
+app.use(express.static(path.join(__dirname, 'quasar-front/dist')));
 app.use(express.json());
 
 const port = process.env.PORT || 8080;
-
 
 app.use(
   express.urlencoded({
@@ -17,8 +21,9 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-    res.status(200).send('Okay');
-    res.json({message: "ok"});
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+    //res.json({message: "ok"});
+
 });
 
 const corsOptions = {
