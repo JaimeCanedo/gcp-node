@@ -20,7 +20,40 @@ const createUser = async (req, res) => {
     }
 };
 
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { name, password, email, rol } = req.body;
+    try {
+        const updatedUser = await usersModel.updateEmployee(id, name, password, email, rol);
+        if (updateUser) {
+            res.json(updateUser);
+        } else {
+            res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al actualizar usaurio por ID:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedUser = await usersModel.deleteUser(id);
+        if (deletedUser) {
+            res.json({ message: 'Usuario eliminado correctamente' });
+        } else {
+            res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al eliminar usaurio por ID:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
 export const usersController = {
     getAll,
     createUser,
+    updateUser,
+    deleteUser
 };
