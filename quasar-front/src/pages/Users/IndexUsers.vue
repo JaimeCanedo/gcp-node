@@ -1,34 +1,49 @@
 <template>
-    <div>
-        <h1>Usuarios</h1>
-        <ul>
-            <li v-for="user in users" :key="user.id">{{ user.name }}</li>
-        </ul>
+    <div class="q-pa-md">
+      <q-table
+        title="Usuarios"
+        :rows="users"
+        :columns="columns"
+        row-key="id"
+      />
     </div>
-</template>
-
-<script>
-export default {
-data() {
-    return {
-       users:[], 
-
-        };
+  </template>
+  
+  <script>
+  export default {
+    name: 'UserTable',
+    data() {
+      return {
+        users: [],
+        columns: [
+          { name: 'id', label: 'ID', align: 'left', sortable: true },
+          { name: 'name', label: 'Nombre', align: 'left', sortable: true },
+          { name: 'email', label: 'Email', align: 'left', sortable: true },
+          { name: 'rol', label: 'Rol', align: 'left', sortable: true }
+        ]
+      };
     },
     mounted() {
-        this.getUsers();
+      this.getUsers();
     },
     methods: {
-        async getUsers(){
-            const response = await fetch("http://localhost:8080/api/users");
-            this.users = await response.json();
-            res.sendFile(path.join(__dirname) + '/quasar-front/dist/spa/index.html');
+      async getUsers() {
+        try {
+          const response = await fetch("http://localhost:8080/api/users");
+          //console.log(response);
+          if (!response.ok) {
+            throw new Error("Error al obtener los usuarios");
+          }
+          this.users = await response.json();
+          console.log(this.users)
+          console.log(Array.from(this.users)); // Convierte el Proxy a un Array
+console.log([...this.users]); // Otra forma de convertir el Proxy a un Array
+
+        } catch (error) {
+          console.error(error);
         }
-        
+      }
     }
-}
-</script>
-
-<style>
-
-</style>
+  };
+  </script>
+  
