@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 });
 
 const corsOptions = {
-  origin: "http://127.0.0.1:5500",
+  origin: "*",
 };
 
 app.use(cors(corsOptions));
