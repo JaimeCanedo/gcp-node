@@ -4,7 +4,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/users', component: () => import('pages/Users/IndexUsers.vue') }
+      { path: '/users', component: () => import('pages/Users/IndexUsers.vue') },
+      { path: '/createUser', component: () => import('pages/Users/createUser.vue') },
+      { path: '/editUser', component: () => import('pages/Users/editUser.vue') }
+
+
 
     ]
   },

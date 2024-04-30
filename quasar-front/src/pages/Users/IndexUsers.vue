@@ -25,12 +25,22 @@
             {{ props.row.rol }}
           </q-td>
           <q-td key="actions" :props="props" class="text-center">
-            <q-btn icon="edit" round dense color="yellow" @click="editUser(props.row)"/>
-            <q-btn icon="delete" round dense color="negative" @click="deleteUser(props.row)"/>
+            
+            <q-item @click="$router.push('/editUser')" clickable>
+            <q-btn icon="edit" round dense color="orange" class="q-ml-md q-mb-md" />
+            </q-item>
+
+
+            <q-btn icon="delete" round dense color="red" class="q-ml-md q-mb-md" />
+
+
           </q-td>
         </q-tr>
       </template>
     </q-table>
+    <q-item @click="$router.push('/createUser')" clickable>
+  <q-btn icon="add" label="Crear" color="primary" class="q-ml-md q-mb-md" />
+</q-item>
   </div>
 </template>
 
@@ -75,4 +85,3 @@ export default {
   text-align: center;
 }
 </style>
-
