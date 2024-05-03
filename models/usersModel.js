@@ -16,7 +16,7 @@ const createUser = async (name, password, email, rol ) => {
     }
 };
 
-const updateUsar = async (id, name, password, email, rol) => {
+const updateUser = async (id, name, password, email, rol) => {
     try {
         const query = 'UPDATE users SET name = $1, password = $2, email = $3 WHERE rol = $4 RETURNING *';
         const values = [name, password, email,rol,id];
@@ -29,7 +29,7 @@ const updateUsar = async (id, name, password, email, rol) => {
 
 const deleteUser = async (id) => {
     try {
-        const query = 'DELETE FROM public.departamento WHERE id = $1 RETURNING *';
+        const query = 'DELETE FROM users WHERE id = $1 RETURNING *';
         const values = [id];
         const result = await pool.query(query, values);
         return result.rows[0];
@@ -43,6 +43,6 @@ const deleteUser = async (id) => {
 export const usersModel = {
     findAll,
     createUser,
-    updateUsar,
+    updateUser,
     deleteUser 
 };

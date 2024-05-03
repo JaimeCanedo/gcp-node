@@ -1,7 +1,8 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      flat bordered
+      flat
+      bordered
       title="Usuarios"
       :rows="users"
       :columns="columns"
@@ -25,22 +26,30 @@
             {{ props.row.rol }}
           </q-td>
           <q-td key="actions" :props="props" class="text-center">
-            
             <q-item @click="$router.push('/editUser')" clickable>
-            <q-btn icon="edit" round dense color="orange" class="q-ml-md q-mb-md" />
+              <q-btn
+                icon="edit"
+                round
+                dense
+                color="orange"
+                class="q-ml-md q-mb-md"
+              />
             </q-item>
-
-
-            <q-btn icon="delete" round dense color="red" class="q-ml-md q-mb-md" />
-
-
+            <q-btn
+              icon="delete"
+              round
+              dense
+              color="red"
+              class="q-ml-md q-mb-md"
+              @click="deleteUser(props.row.id)"
+            />
           </q-td>
         </q-tr>
       </template>
     </q-table>
     <q-item @click="$router.push('/createUser')" clickable>
-  <q-btn icon="add" label="Crear" color="primary" class="q-ml-md q-mb-md" />
-</q-item>
+      <q-btn icon="add" label="Crear" color="primary" class="q-ml-md q-mb-md" />
+    </q-item>
   </div>
 </template>
 
@@ -50,15 +59,17 @@ export default {
     return {
       users: [],
       columns: [
-        { name: 'id', label: 'ID' },
-        { name: 'name', label: 'Nombre' },
-        { name: 'password', label: 'Contraseña' },
-        { name: 'email', label: 'Correo Electrónico' },
-        { name: 'rol', label: 'Rol' },
-        { name: 'actions', label: 'Acciones', align: 'center' }
-      ]
+        { name: "id", label: "ID" },
+        { name: "name", label: "Nombre" },
+        { name: "password", label: "Contraseña" },
+        { name: "email", label: "Correo Electrónico" },
+        { name: "rol", label: "Rol" },
+        { name: "actions", label: "Acciones", align: "center" },
+      ],
     };
   },
+
+  
   mounted() {
     this.getUsers();
   },
@@ -70,12 +81,23 @@ export default {
     async editUser(user) {
 
     },
-    async deleteUser(user) {
-
+    async deleteUser(userId) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+          method: 'DELETE'
+        });
+        if (response.ok) {
+          console.log(`Usuario con ID ${userId} eliminado correctamente`);
+          // Actualizar la lista de usuarios haciendo una nueva solicitud GET a la API
+          this.getUsers();
+        } else {
+          console.error('Error al eliminar el usuario:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error al eliminar el usuario:', error);
+      }
     },
-    async onRowClick(row) {
-
-    }
+    async onRowClick(row) {},
   },
 };
 </script>
