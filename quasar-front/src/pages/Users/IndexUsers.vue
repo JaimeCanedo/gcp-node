@@ -25,16 +25,17 @@
           <q-td key="rol" :props="props">
             {{ props.row.rol }}
           </q-td>
-          <q-td key="actions" :props="props" class="text-center">
-            <q-item @click="$router.push('/editUser')" clickable>
+          
+            <q-td key="actions" :props="props" class="text-center">
               <q-btn
                 icon="edit"
                 round
                 dense
-                color="orange"
+                color="yellow"
                 class="q-ml-md q-mb-md"
+                @click="$router.push({ name: 'editUser', params: { id: props.row.id } })"
+                const userId = router.currentRoute.value.params.id;
               />
-            </q-item>
             <q-btn
               icon="delete"
               round
@@ -69,7 +70,6 @@ export default {
     };
   },
 
-  
   mounted() {
     this.getUsers();
   },
@@ -79,22 +79,30 @@ export default {
       this.users = await response.json();
     },
     async editUser(user) {
-
+      try {
+        
+        this.$router.push({ path:`/editUser/${user.id}` });
+      } catch (error) {
+        console.error("Error al actualizar el usuario:", error);
+      }
     },
     async deleteUser(userId) {
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
-          method: 'DELETE'
-        });
+        const response = await fetch(
+          `http://localhost:8080/api/users/${userId}`,
+          {
+            method: "DELETE",
+          }
+        );
         if (response.ok) {
           console.log(`Usuario con ID ${userId} eliminado correctamente`);
           // Actualizar la lista de usuarios haciendo una nueva solicitud GET a la API
           this.getUsers();
         } else {
-          console.error('Error al eliminar el usuario:', response.statusText);
+          console.error("Error al eliminar el usuario:", response.statusText);
         }
       } catch (error) {
-        console.error('Error al eliminar el usuario:', error);
+        console.error("Error al eliminar el usuario:", error);
       }
     },
     async onRowClick(row) {},

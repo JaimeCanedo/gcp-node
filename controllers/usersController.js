@@ -24,14 +24,14 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const { name, password, email, rol } = req.body;
     try {
-        const updatedUser = await usersModel.updateEmployee(id, name, password, email, rol);
-        if (updateUser) {
-            res.json(updateUser);
+        const updatedUser = await usersModel.updateUser(id, name, password, email, rol);
+        if (updatedUser) {
+            res.json(updatedUser);
         } else {
             res.status(404).json({ message: 'Usuario no encontrado' });
         }
     } catch (error) {
-        console.error('Error al actualizar usaurio por ID:', error);
+        console.error('Error al actualizar usuario por ID:', error);
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
@@ -51,9 +51,25 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const getUser = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await usersModel.getUser(id);
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+    } catch (error) {
+        console.error('Error al obtener usuario por ID:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
 export const usersController = {
     getAll,
     createUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUser
 };
