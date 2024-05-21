@@ -26,16 +26,15 @@
             {{ props.row.rol }}
           </q-td>
           
-            <q-td key="actions" :props="props" class="text-center">
-              <q-btn
-                icon="edit"
-                round
-                dense
-                color="yellow"
-                class="q-ml-md q-mb-md"
-                @click="$router.push({ name: 'editUser', params: { id: props.row.id } })"
-                const userId = router.currentRoute.value.params.id;
-              />
+          <q-td key="actions" :props="props" class="text-center">
+            <q-btn
+              icon="edit"
+              round
+              dense
+              color="yellow"
+              class="q-ml-md q-mb-md"
+              @click="$router.push({ name: 'editUser', params: { id: props.row.id } })"
+            />
             <q-btn
               icon="delete"
               round
@@ -48,13 +47,19 @@
         </q-tr>
       </template>
     </q-table>
-    <q-item @click="$router.push('/createUser')" clickable>
-      <q-btn icon="add" label="Crear" color="primary" class="q-ml-md q-mb-md" />
-    </q-item>
+    <div class="button-container">
+      <q-btn icon="add" label="Crear" color="primary" class="q-ml-md q-mb-md" @click="$router.push('/createUser')" />
+      <q-btn icon="picture_as_pdf" label="Exportar PDF" color="primary" class="q-ml-md q-mb-md" @click="exportToPDF" />
+      <q-btn icon="table_view" label="Exportar Excel" color="primary" class="q-ml-md q-mb-md" @click="exportToExcel" />
+    </div>
   </div>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import * as XLSX from "xlsx";
+
 export default {
   data() {
     return {
@@ -80,8 +85,7 @@ export default {
     },
     async editUser(user) {
       try {
-        
-        this.$router.push({ path:`/editUser/${user.id}` });
+        this.$router.push({ path: `/editUser/${user.id}` });
       } catch (error) {
         console.error("Error al actualizar el usuario:", error);
       }
@@ -96,7 +100,6 @@ export default {
         );
         if (response.ok) {
           console.log(`Usuario con ID ${userId} eliminado correctamente`);
-          // Actualizar la lista de usuarios haciendo una nueva solicitud GET a la API
           this.getUsers();
         } else {
           console.error("Error al eliminar el usuario:", response.statusText);
@@ -106,12 +109,44 @@ export default {
       }
     },
     async onRowClick(row) {},
-  },
+    exportToPDF() {
+      const doc = new jsPDF();
+      const columns = this.columns.filter(col => col.name !== 'actions').map(col => col.label);
+      const rows = this.users.map(user => [
+        user.id,
+        user.name,
+        user.password,
+        user.email,
+        user.rol
+      ]);
+
+      doc.autoTable(columns, rows);
+      doc.save("usuarios.pdf");
+    },
+    exportToExcel() {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(this.users.map(user => ({
+        ID: user.id,
+        Nombre: user.name,
+        Contraseña: user.password,
+        "Correo Electrónico": user.email,
+        Rol: user.rol
+      })));
+
+      XLSX.utils.book_append_sheet(wb, ws, "Usuarios");
+      XLSX.writeFile(wb, "usuarios.xlsx");
+    }
+  }
 };
 </script>
 
 <style scoped>
 .text-center {
   text-align: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

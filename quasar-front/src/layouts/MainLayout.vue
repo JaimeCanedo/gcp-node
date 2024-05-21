@@ -68,6 +68,7 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-  }
+  },
+  
 }
 </script>

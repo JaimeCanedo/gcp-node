@@ -16,6 +16,17 @@ const createUser = async (name, password, email, rol ) => {
     }
 };
 
+const userLogin = async (email, password) => {
+    try {
+        const query = 'SELECT * FROM users WHERE email = $1 AND password = $2';
+        const values = [email, password];
+        const result = await pool.query(query, values);
+        return result.rows[0];
+    } catch (error) {
+        throw error;
+    }
+};
+
 const updateUser = async (id, name, password, email, rol) => {
     try {
         const query = 'UPDATE users SET name = $1, password = $2, email = $3, rol = $4 WHERE id = $5 RETURNING *';
@@ -55,5 +66,6 @@ export const usersModel = {
     createUser,
     updateUser,
     deleteUser,
-    getUser 
+    getUser,
+    userLogin 
 };

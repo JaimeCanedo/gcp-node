@@ -19,6 +19,20 @@ const createUser = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
+const userLogin = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const user = await usersModel.userLogin(email, password);
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+    } catch (error) {
+      console.error('Error al obtener usuario por correo y contraseña:', error);
+      res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
 
 const updateUser = async (req, res) => {
     const { id } = req.params;
@@ -71,5 +85,6 @@ export const usersController = {
     createUser,
     updateUser,
     deleteUser,
-    getUser
+    getUser,
+    userLogin
 };
